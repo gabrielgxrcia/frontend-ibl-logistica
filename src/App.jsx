@@ -13,6 +13,7 @@ function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { setSearchResults, setSearchQuery } = useSearchContext();
   const [books, setBooks] = useState([]);
@@ -57,7 +58,8 @@ function AppContent() {
       await updateBook(selectedBook.id, bookData);
       handleCloseEditModal();
       await fetchBooks();
-      setSelectedBook(null); // Close the sidebar
+      setSelectedBook(null);
+      setIsSidebarOpen(false);
     } catch (error) {
       console.error('Erro ao atualizar livro:', error);
     }
@@ -84,10 +86,12 @@ function AppContent() {
 
   const handleBookClick = (book) => {
     setSelectedBook(book);
+    setIsSidebarOpen(true);
   };
 
   const handleCloseSidebar = () => {
     setSelectedBook(null);
+    setIsSidebarOpen(false);
   };
 
   const handleEditBook = () => {
@@ -99,14 +103,15 @@ function AppContent() {
       await deleteBook(id);
       await fetchBooks();
       setSelectedBook(null);
+      setIsSidebarOpen(false);
     } catch (error) {
       console.error('Erro ao deletar livro:', error);
     }
   };
 
   return (
-    <main className={`main-content ${selectedBook ? 'sidebar-open' : ''}`}>
-      <Navbar onAddBookClick={handleOpenModal} onSearch={handleSearch} />
+    <main className={`main-content ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <Navbar onAddBookClick={handleOpenModal} onSearch={handleSearch} isSidebarOpen={isSidebarOpen} />
       <div className="content-area">
         <Outlet context={{ books, fetchBooks, onBookClick: handleBookClick }} />
       </div>
@@ -124,6 +129,7 @@ function AppContent() {
         onClose={handleCloseSidebar}
         onEdit={handleEditBook}
         onDelete={handleDeleteBook}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
     </main>
   );
