@@ -1,0 +1,9 @@
+.modern-classics {
+  margin-top: 40px;
+}
+
+.modern-classics .book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
