@@ -1,7 +1,7 @@
 .book-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.1rem;
   padding: 0.5rem;
   font-family: var(--font-sans);
 }
